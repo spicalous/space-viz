@@ -2,6 +2,7 @@
   import type { WebGLRenderer } from 'three';
   import { useTemplateRef, onMounted, ref } from 'vue';
   import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
 
   const canvas = useTemplateRef('ref-canvas');
@@ -11,7 +12,8 @@
   const scene = initScene();
 
   onMounted(() => {
-    const renderer: WebGLRenderer = new THREE.WebGLRenderer({ canvas: canvas.value! });
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas.value! });
+    const controls = new OrbitControls(camera, canvas.value!);
     let lastAnimationTimestamp: number | undefined;
 
     function animate(timestamp: number) {
@@ -26,6 +28,7 @@
         camera.updateProjectionMatrix();
       }
       objects.forEach(obj => obj.animate(delta, durationOneYearShouldTakeMs.value));
+      controls.update();
       renderer.render(scene, camera);
     }
     renderer.setAnimationLoop(animate);
@@ -122,8 +125,8 @@
   }
 
   function createSphereGeometry(radius: number) {
-    const widthSegments = 6;
-    const heightSegments = 6;
+    const widthSegments = 10;
+    const heightSegments = 10;
     return new THREE.SphereGeometry(radius, widthSegments, heightSegments);
   }
 

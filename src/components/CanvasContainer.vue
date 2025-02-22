@@ -118,8 +118,9 @@
     earth.addToOrbit(moon, 39343);
     moon.setX(8);
 
-    const intensity = 3;
-    const light = new THREE.PointLight(0xFFFFFF, intensity);
+    const intensity = 10000;
+    const distance = 5000;
+    const light = new THREE.PointLight(0xFFFFFF, intensity, distance);
     scene.add(light);
     return scene;
   }

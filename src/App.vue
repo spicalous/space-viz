@@ -1,15 +1,13 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import WebGL from 'three/addons/capabilities/WebGL.js';
-  import CanvasContainer from './components/CanvasContainer.vue';
+  import MainContainer from './components/MainContainer.vue';
 
   const isWebGL2Available = ref(WebGL.isWebGL2Available());
 </script>
 
 <template>
-  <main v-if="isWebGL2Available">
-    <CanvasContainer msg="You did it!" />
-  </main>
+  <MainContainer v-if="isWebGL2Available" />
   <main v-else>
     <p>Looks like your device doesn't support WebGL 2</p>
   </main>

@@ -5,6 +5,10 @@
   import DebugContainer from './DebugContainer.vue';
   import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
 
+  const props = defineProps<{
+    debugEnabled: boolean
+  }>();
+
   const oneYearDurationMs = ref(5000);
   const objects: AstronomicalObjectViewModel[] = [];
   const scene = initScene();
@@ -100,8 +104,15 @@
 
 <template>
   <main>
-    <CanvasContainer :objects="objects" :scene="scene" :one-year-duration-ms="oneYearDurationMs"/>
-    <DebugContainer />
+    <CanvasContainer
+      :objects="objects"
+      :scene="scene"
+      :one-year-duration-ms="oneYearDurationMs"
+    />
+    <DebugContainer
+      v-if="props.debugEnabled"
+      :axes-helpable="objects"
+    />
   </main>
 </template>
 

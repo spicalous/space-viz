@@ -60,10 +60,27 @@
   .speed-controls {
     pointer-events: auto;
     margin-bottom: 2rem;
+
     button {
+      cursor: pointer;
       display: inline-block;
       padding: 10px 13px;
+      background-color: transparent;
+      color: #EEEEEE;
+      border-color: #EEEEEE;
+      border-radius: 0.5rem;
+
+      &:disabled {
+        cursor: not-allowed;
+        border-color: #333333;
+        color: #333333;
+      }
+      &:hover:enabled {
+        background-color: #EEEEEE;
+        color: #000000;
+      }
     }
+
     span {
       display: inline-block;
       text-align: center;

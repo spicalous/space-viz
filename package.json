@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "test": "npm run lint && npm run build && npm run test:unit -- run"
   },
   "dependencies": {
     "vue": "^3.5.13"

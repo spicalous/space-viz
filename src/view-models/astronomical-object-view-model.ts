@@ -30,17 +30,14 @@ export default class AstronomicalObjectViewModel {
     this.group.position.x = x;
   }
 
-  animate(delta: number, durationOneYearShouldTakeMs: number) {
-    const rotationDurationYears = this.rotationDurationMinutes / 60 / 24 / 365;
-    const rotationDuration = durationOneYearShouldTakeMs * rotationDurationYears;
-    const rotationFraction = delta / rotationDuration;
-    this.mesh.rotation.z = this.mesh.rotation.z + rotationFraction * FULL_ROTATION;
-
+  animate(delta: number, durationMsPerSecond: number) {
+    const rotationDurationMs = this.rotationDurationMinutes * 60 * 1000;
+    const rotationAmount = (delta * (durationMsPerSecond / 1000)) / rotationDurationMs;
+    this.mesh.rotation.z = this.mesh.rotation.z + (rotationAmount * FULL_ROTATION);
     this.orbits.forEach(([orbit, orbitDurationMinutes]) => {
-      const orbitDurationYears = orbitDurationMinutes / 60 / 24 / 365;
-      const orbitDuration = durationOneYearShouldTakeMs * orbitDurationYears;
-      const orbitFraction = delta / orbitDuration;
-      orbit.rotation.z = orbit.rotation.z + orbitFraction * FULL_ROTATION;
+      const orbitDurationMs = orbitDurationMinutes * 60 * 1000;
+      const orbitAmount = (delta * (durationMsPerSecond / 1000)) / orbitDurationMs;
+      orbit.rotation.z = orbit.rotation.z + (orbitAmount * FULL_ROTATION);
     });
   }
 }

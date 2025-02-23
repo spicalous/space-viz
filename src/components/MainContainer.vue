@@ -2,14 +2,16 @@
   import { ref } from 'vue';
   import { Mesh, MeshPhongMaterial, PointLight, Scene, SphereGeometry } from 'three';
   import CanvasContainer from './CanvasContainer.vue';
+  import UserControlsContainer from './UserControlsContainer.vue';
   import DebugContainer from './DebugContainer.vue';
+  import { Speed } from './../models/speed.ts';
   import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
 
   const props = defineProps<{
     debugEnabled: boolean
   }>();
 
-  const oneYearDurationMs = ref(5000);
+  const speed = ref(Speed.FOUR_WEEKS_PER_SECOND);
   const objects: AstronomicalObjectViewModel[] = [];
   const scene = initScene();
 
@@ -103,11 +105,14 @@
 </script>
 
 <template>
-  <main>
+  <main id="main-container">
     <CanvasContainer
       :objects="objects"
       :scene="scene"
-      :one-year-duration-ms="oneYearDurationMs"
+      :speed="speed"
+    />
+    <UserControlsContainer
+      v-model:current-speed="speed"
     />
     <DebugContainer
       v-if="props.debugEnabled"

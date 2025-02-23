@@ -1,10 +1,21 @@
 @import './base.css';
 
 #app,
-main,
+#main-container,
+#user-controls-container,
 canvas {
   height: 100%;
   width: 100%;
+}
+
+#main-container {
+  position: relative;
+}
+#user-controls-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 canvas {

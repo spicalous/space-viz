@@ -3,12 +3,13 @@
   import { useTemplateRef, onMounted } from 'vue';
   import { PerspectiveCamera, WebGLRenderer } from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
+  import { Speed, SPEED_TO_MS_PER_MS } from './../models/speed.ts';
+  import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model.ts';
 
   const props = defineProps<{
     objects: AstronomicalObjectViewModel[],
     scene: Scene,
-    oneYearDurationMs: number
+    speed: Speed
   }>();
 
   const canvas = useTemplateRef('ref-canvas');
@@ -30,7 +31,7 @@
         camera.aspect = getAspectRatio();
         camera.updateProjectionMatrix();
       }
-      props.objects.forEach(obj => obj.animate(delta, props.oneYearDurationMs));
+      props.objects.forEach(obj => obj.animate(delta, SPEED_TO_MS_PER_MS[props.speed]));
       controls.update();
       renderer.render(props.scene, camera);
     }

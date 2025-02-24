@@ -70,7 +70,7 @@
     width: 100%;
     align-self: flex-end;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 3fr 1fr;
   }
 
   .off-screen-toggle {

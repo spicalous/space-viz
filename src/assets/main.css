@@ -21,3 +21,26 @@ canvas {
 canvas {
   display: block;
 }
+
+button {
+  pointer-events: auto;
+  cursor: pointer;
+  display: inline-block;
+  background-color: transparent;
+  color: #EEEEEE;
+  border-color: #EEEEEE;
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: #333333;
+    color: #333333;
+  }
+  &:hover:enabled {
+    background-color: #EEEEEE;
+    color: #000000;
+  }
+}
+
+.bi {
+  vertical-align: -.125rem
+}

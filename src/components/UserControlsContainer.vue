@@ -2,6 +2,9 @@
   import type { Ref } from 'vue';
   import { computed } from 'vue';
   import { Speed } from './../models/speed.ts';
+  import IconFastForward from './icons/IconFastForward.vue';
+  import IconRewind from './icons/IconRewind.vue';
+  import IconList from './icons/IconList.vue';
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
   const SPEED_TO_INDEX = [
@@ -32,20 +35,28 @@
 
 <template>
   <div id="user-controls-container">
-    <div class="speed-controls">
-      <button
-        @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex - 1]"
-        :disabled="minusDisabled"
-      >
-        -
-      </button>
-      <span>{{ SPEED_TO_EN[currentSpeed] }}</span>
-      <button
-        @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex + 1]"
-        :disabled="plusDisabled"
-      >
-        +
-      </button>
+    <div class="bottom">
+      <div class="off-screen-toggle">
+        <button style="display: none"
+        >
+          <IconList />TODO
+        </button>
+      </div>
+      <div class="speed-controls interactive">
+        <button
+          @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex - 1]"
+          :disabled="minusDisabled"
+        >
+          <IconRewind />
+        </button>
+        <span>{{ SPEED_TO_EN[currentSpeed] }}</span>
+        <button
+          @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex + 1]"
+          :disabled="plusDisabled"
+        >
+          <IconFastForward />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -53,32 +64,31 @@
 <style scoped>
   #user-controls-container {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+  }
+
+  .bottom {
+    width: 100%;
+    align-self: flex-end;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .off-screen-toggle {
+    padding-left: 2rem;
+
+    button {
+      border-radius: 2rem;
+      padding: 0.7rem;
+    }
   }
 
   .speed-controls {
-    pointer-events: auto;
+    text-align: center;
     margin-bottom: 2rem;
 
     button {
-      cursor: pointer;
-      display: inline-block;
-      padding: 10px 13px;
-      background-color: transparent;
-      color: #EEEEEE;
-      border-color: #EEEEEE;
+      padding: 0.5rem;
       border-radius: 0.5rem;
-
-      &:disabled {
-        cursor: not-allowed;
-        border-color: #333333;
-        color: #333333;
-      }
-      &:hover:enabled {
-        background-color: #EEEEEE;
-        color: #000000;
-      }
     }
 
     span {

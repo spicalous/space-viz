@@ -17,6 +17,12 @@ canvas {
   left: 0;
   pointer-events: none;
 }
+#debug-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+}
 
 canvas {
   display: block;

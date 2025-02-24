@@ -12,6 +12,7 @@
   }>();
 
   const speed = ref(Speed.FOUR_WEEKS_PER_SECOND);
+  const fps = ref(0);
   const objects: AstronomicalObjectViewModel[] = [];
   const scene = initScene();
 
@@ -110,12 +111,14 @@
       :objects="objects"
       :scene="scene"
       :speed="speed"
+      @update:fps="(newFps) => fps = newFps"
     />
     <UserControlsContainer
       v-model:current-speed="speed"
     />
     <DebugContainer
       v-if="props.debugEnabled"
+      :fps="fps"
       :axes-helpable="objects"
     />
   </main>

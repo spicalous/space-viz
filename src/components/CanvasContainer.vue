@@ -11,6 +11,9 @@
     scene: Scene,
     speed: Speed
   }>();
+  const emit = defineEmits<{
+    'update:fps': [newFps: number]
+  }>();
 
   const canvas = useTemplateRef('ref-canvas');
   const camera = initCamera();
@@ -19,12 +22,21 @@
     const renderer = new WebGLRenderer({ canvas: canvas.value! });
     const controls = new OrbitControls(camera, canvas.value!);
     let lastAnimationTimestamp: number | undefined;
+    let lastFpsTimestamp = performance.now();
+    let frameCount = 0;
 
     function animate(timestamp: number) {
       const delta = lastAnimationTimestamp ? timestamp - lastAnimationTimestamp : 0;
+      const fpsDelta = (timestamp - lastFpsTimestamp) / 1000;
       lastAnimationTimestamp = timestamp;
       if (delta === 0) {
         return;
+      }
+      frameCount++;
+      if (fpsDelta >= 1) {
+        emit('update:fps', frameCount / fpsDelta);
+        frameCount = 0;
+        lastFpsTimestamp = timestamp;
       }
 
       if (resizeRendererToDisplaySize(canvas.value!, renderer)) {
@@ -64,6 +76,3 @@
 <template>
   <canvas ref="ref-canvas"></canvas>
 </template>
-
-<style scoped>
-</style>

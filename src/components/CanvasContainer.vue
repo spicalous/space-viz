@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Scene } from 'three';
-  import { useTemplateRef, onMounted } from 'vue';
+  import { inject, useTemplateRef, onMounted } from 'vue';
   import { PerspectiveCamera, WebGLRenderer } from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { Speed, SPEED_TO_MS_PER_MS } from './../models/speed.ts';
@@ -11,7 +11,7 @@
     scene: Scene,
     speed: Speed
   }>();
-  const emit = defineEmits(['update:fps']);
+  const { updateFps } = inject('fps');
 
   const canvas = useTemplateRef('ref-canvas');
   const camera = initCamera();
@@ -31,7 +31,7 @@
         return;
       }
       if (fpsDelta >= 1) {
-        emit('update:fps', frameCount / fpsDelta);
+        updateFps(frameCount / fpsDelta);
         frameCount = 0;
         lastFpsTimestamp = timestamp;
       }

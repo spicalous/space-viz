@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Scene } from 'three';
-  import { useTemplateRef, onMounted, ref } from 'vue';
+  import { useTemplateRef, onMounted } from 'vue';
   import { PerspectiveCamera, WebGLRenderer } from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { Speed, SPEED_TO_MS_PER_MS } from './../models/speed.ts';
@@ -12,7 +12,6 @@
     speed: Speed
   }>();
   const emit = defineEmits(['update:fps']);
-  const fps = ref(0);
 
   const canvas = useTemplateRef('ref-canvas');
   const camera = initCamera();
@@ -21,16 +20,21 @@
     const renderer = new WebGLRenderer({ canvas: canvas.value! });
     const controls = new OrbitControls(camera, canvas.value!);
     let lastAnimationTimestamp: number | undefined;
-    let lastFpsEmitTimestamp = performance.now();
+    let lastFpsTimestamp = performance.now();
     let frameCount = 0;
     
     function animate(timestamp: number) {
       const delta = lastAnimationTimestamp ? timestamp - lastAnimationTimestamp : 0;
+      const fpsDelta = timestamp - lastFpsTimestamp;
       lastAnimationTimestamp = timestamp;
       if (delta === 0) {
         return;
       }
-      calculateFps();
+      if (fpsDelta >= 1) {
+        emit('update:fps', frameCount / fpsDelta);
+        frameCount = 0;
+        lastFpsTimestamp = timestamp;
+      }
 
       if (resizeRendererToDisplaySize(canvas.value!, renderer)) {
         camera.aspect = getAspectRatio();
@@ -51,9 +55,6 @@
     const camera = new PerspectiveCamera(fieldOfViewDegrees, aspectRatio, nearClippingPane, farClippingPane);
     camera.position.z = 300;
     return camera;
-  }
-
-  function calculateFps() {
   }
 
   function resizeRendererToDisplaySize(canvas: HTMLCanvasElement, renderer: WebGLRenderer): boolean {

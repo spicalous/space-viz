@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { Speed } from './../models/speed.ts';
+  import IconClose from './icons/IconClose.vue';
   import IconFastForward from './icons/IconFastForward.vue';
   import IconRewind from './icons/IconRewind.vue';
   import IconList from './icons/IconList.vue';
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
+  const showMenu = ref(false);
+
   const SPEED_TO_INDEX = [
     Speed.REAL_TIME,
     Speed.ONE_MINUTE_PER_SECOND,
@@ -35,28 +38,33 @@
 
 <template>
   <div id="user-controls-container">
-    <div class="bottom">
-      <div class="off-screen-toggle">
-        <button style="display: none"
-        >
-          <IconList />TODO
-        </button>
+    <div class="speed-controls interactive">
+      <button
+        @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex - 1]"
+        :disabled="minusDisabled"
+      >
+        <IconRewind />
+      </button>
+      <span>{{ SPEED_TO_EN[currentSpeed] }}</span>
+      <button
+        @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex + 1]"
+        :disabled="plusDisabled"
+      >
+        <IconFastForward />
+      </button>
+    </div>
+
+    <div v-if="showMenu" class="menu">
+      <div class="menu-content">
+        TODO
       </div>
-      <div class="speed-controls interactive">
-        <button
-          @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex - 1]"
-          :disabled="minusDisabled"
-        >
-          <IconRewind />
-        </button>
-        <span>{{ SPEED_TO_EN[currentSpeed] }}</span>
-        <button
-          @click="currentSpeed = SPEED_TO_INDEX[currentSpeedIndex + 1]"
-          :disabled="plusDisabled"
-        >
-          <IconFastForward />
-        </button>
-      </div>
+    </div>
+    <div class="off-screen-toggle">
+      <button
+        @click="showMenu = !showMenu"
+      >
+        <component :is="showMenu ? IconClose : IconList"></component>
+      </button>
     </div>
   </div>
 </template>
@@ -66,15 +74,23 @@
     display: flex;
   }
 
-  .bottom {
+  .menu {
+    pointer-events: auto;
+    position: fixed;
     width: 100%;
-    align-self: flex-end;
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    bottom: 0;
+    padding-bottom: 5rem;
+    background-color: rgba(50, 50, 50, 0.98);
+
+    .menu-content {
+      padding: 1rem;
+    }
   }
 
   .off-screen-toggle {
-    padding-left: 2rem;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
 
     button {
       border-radius: 2rem;
@@ -83,6 +99,8 @@
   }
 
   .speed-controls {
+    align-self: flex-end;
+    width: 100%;
     text-align: center;
     margin-bottom: 2rem;
 

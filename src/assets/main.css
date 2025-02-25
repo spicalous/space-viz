@@ -41,10 +41,18 @@ button {
     border-color: #333333;
     color: #333333;
   }
-  &:hover:enabled {
+  &:active {
     background-color: #EEEEEE;
     color: #000000;
   }
+}
+
+/* only style hover if device supports it i.e. mouse pointer and not touch devices */
+@media (hover: hover) {
+    button:hover:enabled {
+      background-color: #EEEEEE;
+      color: #000000;
+    }pr
 }
 
 .bi {

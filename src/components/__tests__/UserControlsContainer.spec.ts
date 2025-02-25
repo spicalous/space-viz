@@ -6,7 +6,10 @@ import { Speed } from '../../models/speed.ts';
 describe('UserControlsContainer', () => {
 
   it('sets speed via props', () => {
-    const wrapper = mount(UserControlsContainer, { props: { currentSpeed: Speed.ONE_MINUTE_PER_SECOND }});
+    const wrapper = mount(UserControlsContainer, { props: {
+      currentSpeed: Speed.ONE_MINUTE_PER_SECOND,
+      equidistantOrbits: true
+    }});
     expect(wrapper.find('.speed-controls span').text()).toBe('1 minute / sec');
   });
 
@@ -14,6 +17,7 @@ describe('UserControlsContainer', () => {
     const wrapper = mount(UserControlsContainer, { props: {
       currentSpeed: Speed.ONE_MINUTE_PER_SECOND,
       'onUpdate:currentSpeed': (e) => wrapper.setProps({ currentSpeed: e }),
+      equidistantOrbits: true
     }});
     // @ts-expect-error disabled is an attribute of element
     expect(wrapper.findAll('.speed-controls button')[0].element.disabled).toBe(false);
@@ -28,6 +32,7 @@ describe('UserControlsContainer', () => {
     const wrapper = mount(UserControlsContainer, { props: {
       currentSpeed: Speed.FOUR_WEEKS_PER_SECOND,
       'onUpdate:currentSpeed': (e) => wrapper.setProps({ currentSpeed: e }),
+      equidistantOrbits: true
     }});
     // @ts-expect-error disabled is an attribute of element
     expect(wrapper.findAll('.speed-controls button')[1].element.disabled).toBe(false);

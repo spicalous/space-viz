@@ -1,19 +1,41 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --blah: #181818;
-  --white: #ffffff
+  --white: #EEEEEE;
+  --black: #000000;
 }
 
 /* semantic color variables for this project */
 :root {
   --text-colour: var(--white);
-  --body-bg-colour: var(--blah);
+  --body-bg-colour: #181818;
+
+  --button-text-colour: var(--white);
+  --button-border-colour: var(--white);
+  --button-active-bg-colour: var(--white);
+  --button-active-text-colour: var(--black);
+  --button-hover-bg-colour: var(--white);
+  --button-hover-text-colour: var(--black);
+
+  --text-toggle-border-colour: var(--white);
+  --text-toggle-active-bg-colour: var(--white);
+  --text-toggle-active-text-colour: var(--black);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --text-colour: var(--white);
-    --body-bg-colour: var(--blah);
+    --body-bg-colour: #181818;
+
+  --button-text-colour: var(--white);
+  --button-border-colour: var(--white);
+  --button-active-bg-colour: var(--white);
+  --button-active-text-colour: var(--black);
+  --button-hover-bg-colour: var(--white);
+  --button-hover-text-colour: var(--black);
+
+  --text-toggle-border-colour: var(--white);
+  --text-toggle-active-bg-colour: var(--white);
+  --text-toggle-active-text-colour: var(--black);
   }
 }
 

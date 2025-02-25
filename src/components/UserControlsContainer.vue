@@ -6,8 +6,10 @@
   import IconFastForward from './icons/IconFastForward.vue';
   import IconRewind from './icons/IconRewind.vue';
   import IconList from './icons/IconList.vue';
+  import TextToggle from './TextToggle.vue';
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
+  const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
   const showMenu = ref(false);
 
   const SPEED_TO_INDEX = [
@@ -56,7 +58,13 @@
 
     <div v-if="showMenu" class="menu">
       <div class="menu-content">
-        TODO
+        <div class="menu-row">
+          <TextToggle
+            v-model="equidistantOrbits"
+            left-false-text="Realistic orbits"
+            right-true-text="Equidistant orbits"
+          />
+        </div>
       </div>
     </div>
     <div class="off-screen-toggle">

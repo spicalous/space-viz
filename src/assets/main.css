@@ -33,8 +33,8 @@ button {
   cursor: pointer;
   display: inline-block;
   background-color: transparent;
-  color: #EEEEEE;
-  border-color: #EEEEEE;
+  color: var(--button-text-colour);
+  border-color: var(--button-border-colour);
 
   &:disabled {
     cursor: not-allowed;
@@ -42,16 +42,16 @@ button {
     color: #333333;
   }
   &:active {
-    background-color: #EEEEEE;
-    color: #000000;
+    background-color: var(--button-active-bg-colour);
+    color: var(--button-active-text-colour);
   }
 }
 
 /* only style hover if device supports it i.e. mouse pointer and not touch devices */
 @media (hover: hover) {
     button:hover:enabled {
-      background-color: #EEEEEE;
-      color: #000000;
+      background-color: var(--button-hover-bg-colour);
+      color: var(--button-hover-text-colour);
     }
 }
 

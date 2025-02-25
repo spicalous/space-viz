@@ -12,6 +12,7 @@
   }>();
 
   const speed = ref(Speed.FOUR_WEEKS_PER_SECOND);
+  const equidistantOrbits = ref(true);
   const fps = ref(0);
   const objects: AstronomicalObjectViewModel[] = [];
   const scene = initScene();
@@ -115,6 +116,7 @@
     />
     <UserControlsContainer
       v-model:current-speed="speed"
+      v-model:equidistant-orbits="equidistantOrbits"
     />
     <DebugContainer
       v-if="props.debugEnabled"

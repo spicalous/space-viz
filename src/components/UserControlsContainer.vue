@@ -8,6 +8,7 @@
   import IconList from './icons/IconList.vue';
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
+  const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
   const showMenu = ref(false);
 
   const SPEED_TO_INDEX = [
@@ -56,7 +57,12 @@
 
     <div v-if="showMenu" class="menu">
       <div class="menu-content">
-        TODO
+        <div class="menu-row">
+          <input 
+            type="checkbox" 
+            v-model="equidistantOrbits"
+          />
+        </div>
       </div>
     </div>
     <div class="off-screen-toggle">

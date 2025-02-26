@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import type AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
-  import { addAxesHelper } from './../utils/debug-utils.ts';
+  import { addAxesHelper, addGridHelper } from './../utils/debug-utils.ts';
 
   const props = defineProps<{
     fps: number,
-    axesHelpable: AstronomicalObjectViewModel[]
+    axesGridHelpable: AstronomicalObjectViewModel[]
   }>();
 
-  props.axesHelpable.forEach(obj => addAxesHelper(obj.mesh, 10));
+  props.axesGridHelpable.forEach(obj => {
+    addAxesHelper(obj.mesh, 10);
+    addGridHelper(obj.mesh, 10);
+  });
 </script>
 
 <template>

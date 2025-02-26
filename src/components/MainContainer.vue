@@ -119,7 +119,7 @@
     <DebugContainer
       v-if="props.debugEnabled"
       :fps="fps"
-      :axes-helpable="objects"
+      :axes-grid-helpable="objects"
     />
   </main>
 </template>

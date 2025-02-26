@@ -5,7 +5,7 @@ import DebugContainer from '../DebugContainer.vue';
 describe('DebugContainer', () => {
 
   it('displays fps info', () => {
-    const wrapper = mount(DebugContainer, { props: { axesHelpable: [], fps: 42 }});
+    const wrapper = mount(DebugContainer, { props: { axesGridHelpable: [], fps: 42 }});
     expect(wrapper.find('div').text()).toBe('42.0 FPS');
   });
 });

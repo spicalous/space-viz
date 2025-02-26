@@ -56,7 +56,7 @@
     const nearClippingPane = 0.1;
     const farClippingPane = 1000;
     const camera = new PerspectiveCamera(fieldOfViewDegrees, aspectRatio, nearClippingPane, farClippingPane);
-    camera.position.z = 300;
+    camera.position.y = 300;
     return camera;
   }
 

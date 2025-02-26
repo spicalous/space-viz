@@ -33,11 +33,11 @@ export default class AstronomicalObjectViewModel {
   animate(delta: number, durationMsPerSecond: number) {
     const rotationDurationMs = this.rotationDurationMinutes * 60 * 1000;
     const rotationAmount = (delta * (durationMsPerSecond / 1000)) / rotationDurationMs;
-    this.mesh.rotation.z = this.mesh.rotation.z + (rotationAmount * FULL_ROTATION);
+    this.mesh.rotation.y = this.mesh.rotation.y + (rotationAmount * FULL_ROTATION);
     this.orbits.forEach(([orbit, orbitDurationMinutes]) => {
       const orbitDurationMs = orbitDurationMinutes * 60 * 1000;
       const orbitAmount = (delta * (durationMsPerSecond / 1000)) / orbitDurationMs;
-      orbit.rotation.z = orbit.rotation.z + (orbitAmount * FULL_ROTATION);
+      orbit.rotation.y = orbit.rotation.y + (orbitAmount * FULL_ROTATION);
     });
   }
 }

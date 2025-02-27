@@ -7,9 +7,15 @@
   import IconRewind from './icons/IconRewind.vue';
   import IconList from './icons/IconList.vue';
   import TextToggle from './TextToggle.vue';
+  import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
   const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
+  const emit = defineEmits(['lookAt']);
+  const props = defineProps<{
+    lookAtControlData: AstronomicalObjectViewModel[]
+  }>();
+
   const showMenu = ref(false);
 
   const SPEED_TO_INDEX = [
@@ -59,10 +65,22 @@
     <div v-if="showMenu" class="menu">
       <div class="menu-content">
         <div class="menu-row">
+          Look at:
+          <button
+            v-for="astronomicalObjectViewModel in props.lookAtControlData"
+            :key="astronomicalObjectViewModel.displayName"
+            style="margin-right: 0.2rem;"
+            @click="emit('lookAt', astronomicalObjectViewModel)"
+          >
+            {{ astronomicalObjectViewModel.displayName }}
+          </button>
+        </div>
+        <div class="menu-row">
+          Orbit:
           <TextToggle
             v-model="equidistantOrbits"
-            left-false-text="Realistic orbits"
-            right-true-text="Equidistant orbits"
+            left-false-text="Realistic"
+            right-true-text="Equidistant"
           />
         </div>
       </div>
@@ -99,6 +117,10 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
+  }
+
+  .menu-row {
+    margin-bottom: 0.5rem;
   }
 
   .speed-controls {

@@ -6,15 +6,18 @@ const SPHERE_HEIGHT_SEGMENTS = 10;
 
 export default class AstronomicalObjectViewModel {
 
+  displayName: string;
   equitorialRadiKilometers: number;
   rotationDurationMinutes: number;
   mesh: Mesh;
   group: Group;
   orbits: [Object3D, number][];
 
-  constructor(equitorialRadiKilometers: number,
+  constructor(displayName: string,
+              equitorialRadiKilometers: number,
               rotationDurationMinutes: number,
               materialProperties: object) {
+    this.displayName = displayName;
     this.equitorialRadiKilometers = equitorialRadiKilometers;
     this.rotationDurationMinutes = rotationDurationMinutes;
     this.mesh = new Mesh(

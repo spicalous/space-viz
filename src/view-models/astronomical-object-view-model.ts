@@ -1,20 +1,31 @@
-import type { Mesh } from 'three';
-import { Group, Object3D } from 'three';
+import { Group, Mesh, MeshPhongMaterial, Object3D, SphereGeometry } from 'three';
 
 const FULL_ROTATION = 2 * Math.PI;
+const SPHERE_WIDTH_SEGMENTS = 10;
+const SPHERE_HEIGHT_SEGMENTS = 10;
 
 export default class AstronomicalObjectViewModel {
 
+  equitorialRadiKilometers: number;
   rotationDurationMinutes: number;
   mesh: Mesh;
   group: Group;
   orbits: [Object3D, number][];
 
-  constructor(rotationDurationMinutes: number, mesh: Mesh) {
+  constructor(equitorialRadiKilometers: number,
+              rotationDurationMinutes: number,
+              materialProperties: object) {
+    this.equitorialRadiKilometers = equitorialRadiKilometers;
     this.rotationDurationMinutes = rotationDurationMinutes;
-    this.mesh = mesh;
+    this.mesh = new Mesh(
+      new SphereGeometry(equitorialRadiKilometers, SPHERE_WIDTH_SEGMENTS, SPHERE_HEIGHT_SEGMENTS),
+      new MeshPhongMaterial(materialProperties))
     this.group = new Group();
     this.orbits = [];
+  }
+
+  getEquitorialRadiKilometers() {
+    return this.equitorialRadiKilometers;
   }
 
   addToOrbit(aovm: AstronomicalObjectViewModel, orbitDurationMinutes: number) {
@@ -31,9 +42,11 @@ export default class AstronomicalObjectViewModel {
   }
 
   animate(delta: number, durationMsPerSecond: number) {
-    const rotationDurationMs = this.rotationDurationMinutes * 60 * 1000;
-    const rotationAmount = (delta * (durationMsPerSecond / 1000)) / rotationDurationMs;
-    this.mesh.rotation.y = this.mesh.rotation.y + (rotationAmount * FULL_ROTATION);
+    if (this.rotationDurationMinutes > 0) {
+      const rotationDurationMs = this.rotationDurationMinutes * 60 * 1000;
+      const rotationAmount = (delta * (durationMsPerSecond / 1000)) / rotationDurationMs;
+      this.mesh.rotation.y = this.mesh.rotation.y + (rotationAmount * FULL_ROTATION);
+    }
     this.orbits.forEach(([orbit, orbitDurationMinutes]) => {
       const orbitDurationMs = orbitDurationMinutes * 60 * 1000;
       const orbitAmount = (delta * (durationMsPerSecond / 1000)) / orbitDurationMs;

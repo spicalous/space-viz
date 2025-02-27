@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { Mesh, MeshPhongMaterial, PointLight, Scene, SphereGeometry } from 'three';
+  import { PointLight, Scene } from 'three';
   import CanvasContainer from './CanvasContainer.vue';
   import UserControlsContainer from './UserControlsContainer.vue';
   import DebugContainer from './DebugContainer.vue';
@@ -18,40 +18,19 @@
   const scene = initScene();
 
   function initScene() {
-    const sun = new AstronomicalObjectViewModel(
-      36072,
-      new Mesh(createSphereGeometry(10), new MeshPhongMaterial({ emissive: 0xFFFF00 })));
-    const mercury = new AstronomicalObjectViewModel(
-      84450,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0x6E6E6E, emissive: 0x6E6E6E })));
-    const venus = new AstronomicalObjectViewModel(
-      349946,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0xE8DAB2, emissive: 0xE8DAB2 })));
-    const earth = new AstronomicalObjectViewModel(
-      1436,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0x2F6B9A, emissive: 0x2F6B9A })));
-    const mars = new AstronomicalObjectViewModel(
-      1477,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0xA64428, emissive: 0xA64428 })));
-    const jupiter = new AstronomicalObjectViewModel(
-      596,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0xD9A774, emissive: 0xD9A774 })));
-    const saturn = new AstronomicalObjectViewModel(
-      639,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0xD4A55C, emissive: 0xD4A55C })));
-    const uranus = new AstronomicalObjectViewModel(
-      1034,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0x88C7C7, emissive: 0x88C7C7 })));
-    const neptune = new AstronomicalObjectViewModel(
-      967,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0x2233FF, emissive: 0x112244 })));
-    const pluto = new AstronomicalObjectViewModel(
-      9197,
-      new Mesh(createSphereGeometry(5), new MeshPhongMaterial({ color: 0xC68E76, emissive: 0xC68E76 })));
-
-    const moon = new AstronomicalObjectViewModel(
-      39343,
-      new Mesh(createSphereGeometry(2), new MeshPhongMaterial({ color: 0x888888, emissive: 0x222222 })));
+                                                // | radius 100km | rotation mins | mesh properties                       |
+                                                // |==============|===============|=======================================|
+    const sun = new AstronomicalObjectViewModel(               10,          36072, { emissive: 0xFFFF00 });
+    const mercury = new AstronomicalObjectViewModel(            5,          84450, { color: 0x6E6E6E, emissive: 0x6E6E6E });
+    const venus = new AstronomicalObjectViewModel(              5,         349946, { color: 0xE8DAB2, emissive: 0xE8DAB2 });
+    const earth = new AstronomicalObjectViewModel(              5,           1436, { color: 0x2F6B9A, emissive: 0x2F6B9A });
+    const mars = new AstronomicalObjectViewModel(               5,           1477, { color: 0xA64428, emissive: 0xA64428 });
+    const jupiter = new AstronomicalObjectViewModel(            5,            596, { color: 0xD9A774, emissive: 0xD9A774 });
+    const saturn = new AstronomicalObjectViewModel(             5,            639, { color: 0xD4A55C, emissive: 0xD4A55C });
+    const uranus = new AstronomicalObjectViewModel(             5,           1034, { color: 0x88C7C7, emissive: 0x88C7C7 });
+    const neptune = new AstronomicalObjectViewModel(            5,            967, { color: 0x2233FF, emissive: 0x112244 });
+    const pluto = new AstronomicalObjectViewModel(              5,           9197, { color: 0xC68E76, emissive: 0xC68E76 });
+    const moon = new AstronomicalObjectViewModel(               2,          39343, { color: 0x888888, emissive: 0x222222 });
 
     objects.push(sun);
     objects.push(mercury);
@@ -96,12 +75,6 @@
     const light = new PointLight(0xFFFFFF, intensity, distance);
     scene.add(light);
     return scene;
-  }
-
-  function createSphereGeometry(radius: number): SphereGeometry {
-    const widthSegments = 10;
-    const heightSegments = 10;
-    return new SphereGeometry(radius, widthSegments, heightSegments);
   }
 
 </script>

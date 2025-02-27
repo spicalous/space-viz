@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { PointLight, Scene } from 'three';
+  import { PerspectiveCamera, PointLight, Scene } from 'three';
   import CanvasContainer from './CanvasContainer.vue';
   import UserControlsContainer from './UserControlsContainer.vue';
   import DebugContainer from './DebugContainer.vue';
@@ -15,6 +15,7 @@
   const equidistantOrbits = ref(true);
   const fps = ref(0);
   const objects: AstronomicalObjectViewModel[] = [];
+  const camera = initCamera();
   const scene = initScene();
 
   function initScene() {
@@ -77,14 +78,34 @@
     return scene;
   }
 
+  function initCamera(): PerspectiveCamera {
+    const fieldOfViewDegrees = 75;
+    const aspectRatio = getAspectRatio();
+    const nearClippingPane = 0.1;
+    const farClippingPane = 1000;
+    const camera = new PerspectiveCamera(fieldOfViewDegrees, aspectRatio, nearClippingPane, farClippingPane);
+    camera.position.y = 300;
+    return camera;
+  }
+
+  function onResize() {
+    camera.aspect = getAspectRatio();
+    camera.updateProjectionMatrix();
+  }
+
+  function getAspectRatio(): number {
+    return window.innerWidth / window.innerHeight;
+  }
 </script>
 
 <template>
   <main id="main-container">
     <CanvasContainer
       :objects="objects"
+      :camera="camera"
       :scene="scene"
       :speed="speed"
+      :on-resize="onResize"
       @update:fps="(newFps) => fps = newFps"
     />
     <UserControlsContainer

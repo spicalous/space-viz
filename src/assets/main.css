@@ -32,6 +32,8 @@ button {
   pointer-events: auto;
   cursor: pointer;
   display: inline-block;
+  padding: 0.5rem;
+  border-radius: 0.1rem;
   background-color: transparent;
   color: var(--button-text-colour);
   border-color: var(--button-border-colour);

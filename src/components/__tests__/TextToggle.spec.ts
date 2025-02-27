@@ -4,7 +4,7 @@ import TextToggle from '../TextToggle.vue';
 
 describe('TextToggle', () => {
 
-  it('text toggle properties', () => {
+  it('text toggle button text', () => {
     const wrapper = mount(TextToggle, { props: {
       modelValue: true,
       leftFalseText: 'leftFalseText',
@@ -14,7 +14,7 @@ describe('TextToggle', () => {
     expect(wrapper.find('.toggle-button:last-child').text()).toBe('rightTrueText');
   });
 
-  it('clicking button sets active class', async () => {
+  it('clicking first button sets active class', async () => {
     const wrapper = mount(TextToggle, { props: {
       modelValue: true,
       leftFalseText: 'leftFalseText',
@@ -29,7 +29,7 @@ describe('TextToggle', () => {
     expect(wrapper.find('.toggle-button:last-child').classes('active')).toBe(false);
   });
 
-  it('clicking button sets active class', async () => {
+  it('clicking second button sets active class', async () => {
     const wrapper = mount(TextToggle, { props: {
       modelValue: false,
       leftFalseText: 'leftFalseText',

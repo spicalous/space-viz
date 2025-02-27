@@ -31,7 +31,7 @@
   .text-toggle {
     display: inline-block;
     border: solid 2px;
-    border-radius: 0.7rem;
+    border-radius: 0.1rem;
     border-color: var(--text-toggle-border-colour);
     padding: 0.2rem;
 
@@ -46,13 +46,9 @@
         background-color: var(--text-toggle-active-bg-colour);
       }
       &:first-child {
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
         padding-right: 0.3rem;
       }
       &:last-child {
-        border-top-right-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
         padding-left: 0.3rem;
       }
     }

@@ -99,11 +99,6 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-
-    button {
-      border-radius: 2rem;
-      padding: 0.7rem;
-    }
   }
 
   .speed-controls {
@@ -111,11 +106,6 @@
     width: 100%;
     text-align: center;
     margin-bottom: 2rem;
-
-    button {
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-    }
 
     span {
       display: inline-block;

@@ -10,7 +10,7 @@ describe('MainContainer', () => {
       stubs: { CanvasContainer: true },
       provide: {
         'debug:fps': { fps: 42 },
-        'debug:camera': { camera: { position: { x: 0, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0 }}}
+        'debug:poses': { poses: [] }
       }
     }
   };

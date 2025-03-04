@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { FpsProvider, CameraProvider, CameraData } from './provider-types.ts';
+  import type { FpsProvider, Pose, PoseProvider } from './provider-types.ts';
   import { ref, provide } from 'vue';
   import WebGL from 'three/addons/capabilities/WebGL.js';
   import MainContainer from './components/MainContainer.vue';
@@ -9,21 +9,18 @@
   const debugEnabled = debugFlagEnabled();
 
   const fps: FpsProvider['fps'] = ref(0);
-  const camera: CameraProvider['camera'] = ref({
-    position: { x: 0, y: 0, z: 0 },
-    rotation: { x: 0, y: 0, z: 0 }
-  });
+  const poses: PoseProvider['poses'] = ref([]);
 
   const updateFps: FpsProvider['updateFps'] = function(newFps: number) {
     fps.value = newFps;
   }
 
-  const updateCamera: CameraProvider['updateCamera'] = function(data: CameraData) {
-    camera.value = data;
+  const updatePoses: PoseProvider['updatePoses'] = function(newPoses: Pose[]) {
+    poses.value = newPoses;
   }
 
   provide('debug:fps', { fps, updateFps });
-  provide('debug:camera', { camera, updateCamera });
+  provide('debug:poses', { poses, updatePoses });
 </script>
 
 <template>

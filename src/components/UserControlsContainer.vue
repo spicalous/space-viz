@@ -11,7 +11,7 @@
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
   const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
-  const emit = defineEmits(['lookAt', 'recenter']);
+  const emit = defineEmits(['on:look-at', 'on:recenter']);
   const props = defineProps<{
     lookAtControlData: AstronomicalObjectViewModel[]
   }>();
@@ -66,7 +66,7 @@
       <div class="menu-content">
         <div class="menu-row">
           <button
-            @click="emit('recenter')"
+            @click="emit('on:recenter')"
           >
             Recenter
           </button>
@@ -77,7 +77,7 @@
             v-for="astronomicalObjectViewModel in props.lookAtControlData"
             :key="astronomicalObjectViewModel.displayName"
             style="margin-right: 0.2rem;"
-            @click="emit('lookAt', astronomicalObjectViewModel)"
+            @click="emit('on:look-at', astronomicalObjectViewModel)"
           >
             {{ astronomicalObjectViewModel.displayName }}
           </button>

@@ -144,8 +144,8 @@
       v-model:current-speed="speed"
       v-model:equidistant-orbits="equidistantOrbits"
       :look-at-control-data="lookAtControlData"
-      @recenter="recenter"
-      @lookAt="lookAt"
+      @on:recenter="recenter"
+      @on:look-at="lookAt"
     />
     <DebugContainer
       v-if="props.debugEnabled"

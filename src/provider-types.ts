@@ -5,18 +5,19 @@ interface FpsProvider {
   updateFps: (newFps: number) => void;
 }
 
-interface CameraData {
+interface Pose {
+  name: string,
   position: { x: number, y: number, z: number },
   rotation: { x: number, y: number, z: number }
 }
 
-interface CameraProvider {
-  camera: Ref<CameraData>,
-  updateCamera: (data: CameraData) => void;
+interface PoseProvider {
+  poses: Ref<Pose[]>,
+  updatePoses: (newPoses: Pose[]) => void;
 }
 
 export type {
   FpsProvider,
-  CameraProvider,
-  CameraData
+  Pose,
+  PoseProvider
 };

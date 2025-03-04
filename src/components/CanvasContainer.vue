@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { PerspectiveCamera, Scene } from 'three';
-  import type { FpsProvider, CameraProvider } from './../provider-types.ts';
+  import type { FpsProvider, PoseProvider } from './../provider-types.ts';
   import { inject, ref, useTemplateRef, onMounted } from 'vue';
   import { WebGLRenderer } from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -18,7 +18,7 @@
   }>();
 
   const { updateFps } = inject('debug:fps') as FpsProvider;
-  const { updateCamera } = inject('debug:camera') as CameraProvider;
+  const { updatePoses } = inject('debug:poses') as PoseProvider;
   const orbitControlsRef = ref<OrbitControls>();
   const canvas = useTemplateRef('ref-canvas');
 
@@ -60,10 +60,18 @@
   });
 
   function onControlsChanged() {
-    updateCamera({
-      position: props.camera.position,
-      rotation: props.camera.rotation
-    });
+    updatePoses([
+      {
+        name: 'camera',
+        position: props.camera.position,
+        rotation: props.camera.rotation
+      },
+      {
+        name: 'controls',
+        position: props.camera.position,
+        rotation: props.camera.rotation
+      }
+    ]);
   }
 
   function resizeRendererToDisplaySize(canvas: HTMLCanvasElement, renderer: WebGLRenderer): boolean {
@@ -73,6 +81,8 @@
     }
     return false;
   }
+
+  onControlsChanged(); // init debug info
 </script>
 
 <template>

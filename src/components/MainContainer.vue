@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, useTemplateRef } from 'vue';
   import { PerspectiveCamera, PointLight, Scene, Vector3 } from 'three';
   import CanvasContainer from './CanvasContainer.vue';
   import UserControlsContainer from './UserControlsContainer.vue';
@@ -13,7 +13,7 @@
 
   const speed = ref(Speed.FOUR_WEEKS_PER_SECOND);
   const equidistantOrbits = ref(true);
-  const fps = ref(0);
+  const canvasContainerRef = useTemplateRef('ref-canvas-container')
 
                                                         // | radius 100km | rotation mins | mesh properties                       |
                                                         // |==============|===============|=======================================|
@@ -111,6 +111,17 @@
     pluto
   ];
 
+  function recenter() {
+    if (canvasContainerRef && canvasContainerRef.value && canvasContainerRef.value.orbitControlsRef) {
+      canvasContainerRef.value.orbitControlsRef.target.x = 0;
+      canvasContainerRef.value.orbitControlsRef.target.y = 0;
+      canvasContainerRef.value.orbitControlsRef.target.z = 0;
+      camera.position.x = 0;
+      camera.position.y = 300;
+      camera.position.z = 0;
+    }
+  }
+
   function lookAt(object: AstronomicalObjectViewModel) {
     const targetPosition = new Vector3();
     object.mesh.getWorldPosition(targetPosition);
@@ -122,22 +133,22 @@
 <template>
   <main id="main-container">
     <CanvasContainer
+      ref="ref-canvas-container"
       :objects="objects"
       :camera="camera"
       :scene="scene"
       :speed="speed"
       :on-resize="onResize"
-      @update:fps="(newFps) => fps = newFps"
     />
     <UserControlsContainer
       v-model:current-speed="speed"
       v-model:equidistant-orbits="equidistantOrbits"
       :look-at-control-data="lookAtControlData"
+      @recenter="recenter"
       @lookAt="lookAt"
     />
     <DebugContainer
       v-if="props.debugEnabled"
-      :fps="fps"
       :axes-grid-helpable="objects"
     />
   </main>

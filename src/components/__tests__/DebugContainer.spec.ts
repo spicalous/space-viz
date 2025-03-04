@@ -4,8 +4,18 @@ import DebugContainer from '../DebugContainer.vue';
 
 describe('DebugContainer', () => {
 
-  it('displays fps info', () => {
-    const wrapper = mount(DebugContainer, { props: { axesGridHelpable: [], fps: 42 }});
-    expect(wrapper.find('div').text()).toBe('42.0 FPS');
+  it('displays debug info', () => {
+    const wrapper = mount(DebugContainer, {
+      global: {
+        provide: {
+          'debug:fps': { fps: 42 },
+          'debug:camera': { camera: { position: { x: 1, y: 2, z: 3 }, rotation: { x: 4, y: 5, z: 6 }}}
+        }
+      },
+      props: { axesGridHelpable: [] }
+    });
+    expect(wrapper.find('div[data-test="debug-container--fps"]').text()).toBe('42.0 FPS');
+    expect(wrapper.find('div[data-test="debug-container--position"]').text()).toBe('position x 1.0 y 2.0 z 3.0');
+    expect(wrapper.find('div[data-test="debug-container--rotation"]').text()).toBe('rotation x 4.0 y 5.0 z 6.0');
   });
 });

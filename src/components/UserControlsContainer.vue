@@ -11,7 +11,7 @@
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
   const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
-  const emit = defineEmits(['lookAt']);
+  const emit = defineEmits(['lookAt', 'recenter']);
   const props = defineProps<{
     lookAtControlData: AstronomicalObjectViewModel[]
   }>();
@@ -65,6 +65,13 @@
     <div v-if="showMenu" class="menu">
       <div class="menu-content">
         <div class="menu-row">
+          <button
+            @click="emit('recenter')"
+          >
+            Recenter
+          </button>
+        </div>
+        <div class="menu-row hidden">
           Look at:
           <button
             v-for="astronomicalObjectViewModel in props.lookAtControlData"
@@ -75,7 +82,7 @@
             {{ astronomicalObjectViewModel.displayName }}
           </button>
         </div>
-        <div class="menu-row">
+        <div class="menu-row hidden">
           Orbit:
           <TextToggle
             v-model="equidistantOrbits"
@@ -114,7 +121,6 @@
   }
 
   .off-screen-toggle {
-    display: none;
     position: fixed;
     bottom: 2rem;
     right: 2rem;
@@ -136,6 +142,10 @@
       padding: 0 8px;
       min-width: 120px;
     }
+  }
+
+  .hidden {
+    display: none;
   }
 </style>
 

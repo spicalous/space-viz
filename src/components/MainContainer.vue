@@ -85,7 +85,8 @@
     const nearClippingPane = 0.1;
     const farClippingPane = 1000;
     const camera = new PerspectiveCamera(fieldOfViewDegrees, aspectRatio, nearClippingPane, farClippingPane);
-    camera.position.y = 300;
+    camera.position.set(0, 300, 0);
+    camera.up.set(0, 0, 1);
     return camera;
   }
 
@@ -123,10 +124,11 @@
   }
 
   function lookAt(object: AstronomicalObjectViewModel) {
-    const targetPosition = new Vector3();
-    object.mesh.getWorldPosition(targetPosition);
-    console.log(targetPosition);
-    camera.lookAt(targetPosition); // TODO investigate why this doesn't work;
+    if (canvasContainerRef && canvasContainerRef.value && canvasContainerRef.value.orbitControlsRef) {
+      const targetPosition = new Vector3();
+      object.mesh.getWorldPosition(targetPosition);
+      canvasContainerRef.value.orbitControlsRef.target.set(targetPosition.x, targetPosition.y, targetPosition.z);
+    }
   }
 </script>
 

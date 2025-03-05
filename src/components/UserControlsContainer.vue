@@ -71,17 +71,17 @@
             Recenter
           </button>
         </div>
-        <div class="menu-row hidden">
-          Look at:
+        <fieldset class="menu-row button-list">
+          <legend>Look at</legend>
           <button
+            class="btn-siblings"
             v-for="astronomicalObjectViewModel in props.lookAtControlData"
             :key="astronomicalObjectViewModel.displayName"
-            style="margin-right: 0.2rem;"
             @click="emit('on:look-at', astronomicalObjectViewModel)"
           >
             {{ astronomicalObjectViewModel.displayName }}
           </button>
-        </div>
+        </fieldset>
         <div class="menu-row hidden">
           Orbit:
           <TextToggle
@@ -128,6 +128,12 @@
 
   .menu-row {
     margin-bottom: 0.5rem;
+  }
+
+  .button-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
   }
 
   .speed-controls {

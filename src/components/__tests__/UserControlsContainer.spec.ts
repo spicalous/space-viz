@@ -32,7 +32,7 @@ describe('UserControlsContainer', () => {
 
   it('increment speed is disabled when highest speed is selected', async () => {
     const wrapper = mount(UserControlsContainer, { props: {
-      currentSpeed: Speed.FOUR_WEEKS_PER_SECOND,
+      currentSpeed: Speed.SIXTEEN_WEEKS_PER_SECOND,
       'onUpdate:currentSpeed': (e) => wrapper.setProps({ currentSpeed: e }),
       equidistantOrbits: true,
       lookAtControlData: []

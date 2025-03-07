@@ -7,6 +7,8 @@ export enum Speed {
   ONE_WEEK_PER_SECOND = "ONE_WEEK_PER_SECOND",
   TWO_WEEKS_PER_SECOND = "TWO_WEEKS_PER_SECOND",
   FOUR_WEEKS_PER_SECOND = "FOUR_WEEKS_PER_SECOND",
+  EIGHT_WEEKS_PER_SECOND = "EIGHT_WEEKS_PER_SECOND",
+  SIXTEEN_WEEKS_PER_SECOND = "SIXTEEN_WEEKS_PER_SECOND",
   ONE_YEAR_PER_SECOND = "ONE_YEAR_PER_SECOND",
 }
 
@@ -18,5 +20,20 @@ export const SPEED_TO_MS_PER_MS = {
   [Speed.ONE_WEEK_PER_SECOND]: 1000 * 60 * 60 * 24 * 7,
   [Speed.TWO_WEEKS_PER_SECOND]: 1000 * 60 * 60 * 24 * 7 * 2,
   [Speed.FOUR_WEEKS_PER_SECOND]: 1000 * 60 * 60 * 24 * 4 * 4,
+  [Speed.EIGHT_WEEKS_PER_SECOND]: 1000 * 60 * 60 * 24 * 4 * 8,
+  [Speed.SIXTEEN_WEEKS_PER_SECOND]: 1000 * 60 * 60 * 24 * 4 * 16,
   [Speed.ONE_YEAR_PER_SECOND]: 1000 * 60 * 60 * 24 * 365
+};
+
+export const SPEED_DISPLAY_NAME: { [key in Speed]: string } = {
+  [Speed.REAL_TIME]: 'Real time',
+  [Speed.ONE_MINUTE_PER_SECOND]: '1 minute / sec',
+  [Speed.ONE_HOUR_PER_SECOND]: '1 hour / sec',
+  [Speed.ONE_DAY_PER_SECOND]: '1 day / sec',
+  [Speed.ONE_WEEK_PER_SECOND]: '1 week / sec',
+  [Speed.TWO_WEEKS_PER_SECOND]: '2 weeks / sec',
+  [Speed.FOUR_WEEKS_PER_SECOND]: '4 weeks / sec',
+  [Speed.EIGHT_WEEKS_PER_SECOND]: '8 weeks / sec',
+  [Speed.SIXTEEN_WEEKS_PER_SECOND]: '16 weeks / sec',
+  [Speed.ONE_YEAR_PER_SECOND]: '1 year / sec'
 };

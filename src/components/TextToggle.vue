@@ -41,7 +41,6 @@
       padding: 0.2rem;
 
       &.active {
-        font-weight: bold;
         color: var(--text-toggle-active-text-colour);
         background-color: var(--text-toggle-active-bg-colour);
       }

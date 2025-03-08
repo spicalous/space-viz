@@ -4,8 +4,9 @@
   import CanvasContainer from './CanvasContainer.vue';
   import UserControlsContainer from './UserControlsContainer.vue';
   import DebugContainer from './DebugContainer.vue';
+  import { AstronomicalObjects, DISPLAY_NAMES, EQUITORIAL_RADI_KILOMETERS, ROTATION_MINUTES, SUN_ORBIT_DURATION_MINUTES } from './../models/astronomical-objects.ts';
   import { Speed } from './../models/speed.ts';
-  import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model';
+  import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model.ts';
 
   const props = defineProps<{
     debugEnabled: boolean
@@ -15,62 +16,53 @@
   const equidistantOrbits = ref(true);
   const canvasContainerRef = useTemplateRef('ref-canvas-container')
 
-                                                        // | radius 100km | rotation mins | mesh properties                       |
-                                                        // |==============|===============|=======================================|
-  const sun = new AstronomicalObjectViewModel("Sun",                   10,          36072, { emissive: 0xFFFF00 });
-  const mercury = new AstronomicalObjectViewModel("Mercury",            5,          84450, { color: 0x6E6E6E, emissive: 0x6E6E6E });
-  const venus = new AstronomicalObjectViewModel("Venus",                5,         349946, { color: 0xE8DAB2, emissive: 0xE8DAB2 });
-  const earth = new AstronomicalObjectViewModel("Earth",                5,           1436, { color: 0x2F6B9A, emissive: 0x2F6B9A });
-  const mars = new AstronomicalObjectViewModel("Mars",                  5,           1477, { color: 0xA64428, emissive: 0xA64428 });
-  const jupiter = new AstronomicalObjectViewModel("Jupiter",            5,            596, { color: 0xD9A774, emissive: 0xD9A774 });
-  const saturn = new AstronomicalObjectViewModel("Saturn",              5,            639, { color: 0xD4A55C, emissive: 0xD4A55C });
-  const uranus = new AstronomicalObjectViewModel("Uranus",              5,           1034, { color: 0x88C7C7, emissive: 0x88C7C7 });
-  const neptune = new AstronomicalObjectViewModel("Neptune",            5,            967, { color: 0x2233FF, emissive: 0x112244 });
-  const pluto = new AstronomicalObjectViewModel("Pluto",                5,           9197, { color: 0xC68E76, emissive: 0xC68E76 });
-  const moon = new AstronomicalObjectViewModel("Moon",                  2,          39343, { color: 0x888888, emissive: 0x222222 });
+  const MATERIAL_PROPERTIES = {
+    [AstronomicalObjects.SUN]: { emissive: 0xFFFF00 },
+    [AstronomicalObjects.MERCURY]: { color: 0x6E6E6E, emissive: 0x6E6E6E },
+    [AstronomicalObjects.VENUS]: { color: 0xE8DAB2, emissive: 0xE8DAB2 },
+    [AstronomicalObjects.EARTH]: { color: 0x2F6B9A, emissive: 0x2F6B9A },
+    [AstronomicalObjects.MARS]: { color: 0xA64428, emissive: 0xA64428 },
+    [AstronomicalObjects.JUPITER]: { color: 0xD9A774, emissive: 0xD9A774 },
+    [AstronomicalObjects.SATURN]: { color: 0xD4A55C, emissive: 0xD4A55C },
+    [AstronomicalObjects.URANUS]: { color: 0x88C7C7, emissive: 0x88C7C7 },
+    [AstronomicalObjects.NEPTUNE]: { color: 0x2233FF, emissive: 0x112244 },
+    [AstronomicalObjects.PLUTO]: { color: 0xC68E76, emissive: 0xC68E76 },
+    [AstronomicalObjects.MOON]: { color: 0x888888, emissive: 0x222222 }
+  }
 
-  const objects: AstronomicalObjectViewModel[] = [
-    sun,
-    mercury,
-    venus,
-    earth,
-    mars,
-    jupiter,
-    saturn,
-    uranus,
-    neptune,
-    pluto,
-    moon
-  ];
+  const objects: { [key in AstronomicalObjects]: AstronomicalObjectViewModel } = {} as { [key in AstronomicalObjects]: AstronomicalObjectViewModel };
+
+  for (const key of Object.keys(AstronomicalObjects) as Array<keyof typeof AstronomicalObjects>) {
+    objects[key] = new AstronomicalObjectViewModel(
+      DISPLAY_NAMES[key],
+      EQUITORIAL_RADI_KILOMETERS[key],
+      ROTATION_MINUTES[key],
+      MATERIAL_PROPERTIES[key]);
+  }
+
   const camera = initCamera();
   const scene = initScene();
 
   function initScene() {
+    const sun = objects[AstronomicalObjects.SUN];
     const scene = new Scene();
     scene.add(sun.mesh);
     scene.add(sun.group);
 
-    sun.addToOrbit(mercury, 126676);
-    sun.addToOrbit(venus, 323568);
-    sun.addToOrbit(earth, 525960);
-    sun.addToOrbit(mars, 989251);
-    sun.addToOrbit(jupiter, 6242514);
-    sun.addToOrbit(saturn, 15500087);
-    sun.addToOrbit(uranus, 44219318);
-    sun.addToOrbit(neptune, 86706432);
-    sun.addToOrbit(pluto, 130453946);
-    mercury.setX(20);
-    venus.setX(40);
-    earth.setX(60);
-    mars.setX(80);
-    jupiter.setX(100);
-    saturn.setX(120);
-    uranus.setX(140);
-    neptune.setX(160);
-    pluto.setX(180);
+    const distanceBetweenPlanets = 10;
+    let distanceFromSun = objects[AstronomicalObjects.SUN].getEquitorialRadiKilometers();
+    for (const key of Object.keys(SUN_ORBIT_DURATION_MINUTES) as Array<keyof typeof SUN_ORBIT_DURATION_MINUTES>) {
+      const planet = objects[key];
+      sun.addToOrbit(planet, SUN_ORBIT_DURATION_MINUTES[key]);
+      distanceFromSun = distanceFromSun + distanceBetweenPlanets + planet.getEquitorialRadiKilometers();
+      planet.setX(distanceFromSun);
+      distanceFromSun = distanceFromSun + planet.getEquitorialRadiKilometers()
+    }
 
-    earth.addToOrbit(moon, 39343);
-    moon.setX(8);
+    const moon = objects[AstronomicalObjects.MOON];
+    const earth = objects[AstronomicalObjects.EARTH];
+    objects[AstronomicalObjects.EARTH].addToOrbit(moon, 39343);
+    moon.setX(earth.getEquitorialRadiKilometers() + 2 + moon.getEquitorialRadiKilometers());
 
     const intensity = 10000;
     const distance = 5000;
@@ -99,19 +91,6 @@
     return window.innerWidth / window.innerHeight;
   }
 
-  const lookAtControlData: AstronomicalObjectViewModel[] = [
-    sun,
-    mercury,
-    venus,
-    earth,
-    mars,
-    jupiter,
-    saturn,
-    uranus,
-    neptune,
-    pluto
-  ];
-
   function recenter() {
     if (canvasContainerRef && canvasContainerRef.value && canvasContainerRef.value.orbitControlsRef) {
       canvasContainerRef.value.orbitControlsRef.target.x = 0;
@@ -136,7 +115,7 @@
   <main id="main-container">
     <CanvasContainer
       ref="ref-canvas-container"
-      :objects="objects"
+      :objects="Object.values(objects)"
       :camera="camera"
       :scene="scene"
       :speed="speed"
@@ -145,13 +124,24 @@
     <UserControlsContainer
       v-model:current-speed="speed"
       v-model:equidistant-orbits="equidistantOrbits"
-      :look-at-control-data="lookAtControlData"
+      :look-at-control-data="[
+        objects[AstronomicalObjects.SUN],
+        objects[AstronomicalObjects.MERCURY],
+        objects[AstronomicalObjects.VENUS],
+        objects[AstronomicalObjects.EARTH],
+        objects[AstronomicalObjects.MARS],
+        objects[AstronomicalObjects.JUPITER],
+        objects[AstronomicalObjects.SATURN],
+        objects[AstronomicalObjects.URANUS],
+        objects[AstronomicalObjects.NEPTUNE],
+        objects[AstronomicalObjects.PLUTO]
+      ]"
       @on:recenter="recenter"
       @on:look-at="lookAt"
     />
     <DebugContainer
       v-if="props.debugEnabled"
-      :axes-grid-helpable="objects"
+      :axes-grid-helpable="Object.values(objects)"
     />
   </main>
 </template>

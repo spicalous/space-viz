@@ -1,10 +1,17 @@
 <script setup lang="ts">
-  import { ref, useTemplateRef } from 'vue';
+  import { computed, ref, useTemplateRef, watch } from 'vue';
   import { PerspectiveCamera, PointLight, Scene, Vector3 } from 'three';
   import CanvasContainer from './CanvasContainer.vue';
   import UserControlsContainer from './UserControlsContainer.vue';
   import DebugContainer from './DebugContainer.vue';
-  import { AstronomicalObjects, DISPLAY_NAMES, EQUITORIAL_RADI_KILOMETERS, ROTATION_MINUTES, SUN_ORBIT_DURATION_MINUTES } from './../models/astronomical-objects.ts';
+  import {
+    AstronomicalObjects,
+    DISPLAY_NAMES,
+    EQUITORIAL_RADI_KILOMETERS_EQUAL,
+    EQUITORIAL_RADI_KILOMETERS_REALISTIC,
+    ROTATION_MINUTES,
+    SUN_ORBIT_DURATION_MINUTES
+  } from './../models/astronomical-objects.ts';
   import { Speed } from './../models/speed.ts';
   import AstronomicalObjectViewModel from './../view-models/astronomical-object-view-model.ts';
 
@@ -12,9 +19,19 @@
     debugEnabled: boolean
   }>();
 
-  const speed = ref(Speed.FOUR_WEEKS_PER_SECOND);
+  const speed = ref(Speed.TWO_WEEKS_PER_SECOND);
+  const equalPlanetSize = ref(true);
   const equidistantOrbits = ref(true);
   const canvasContainerRef = useTemplateRef('ref-canvas-container')
+
+  const initialCameraDistance = computed(() => equalPlanetSize.value ? 300 : 2500);
+  const distanceBetweenPlanets = computed(() => equalPlanetSize.value ? 10 : 100);
+  const radiMap = computed(() => equalPlanetSize.value ? EQUITORIAL_RADI_KILOMETERS_EQUAL : EQUITORIAL_RADI_KILOMETERS_REALISTIC);
+
+  watch(equalPlanetSize, () => {
+    updateOrbitRadi();
+    recenter();
+  });
 
   const MATERIAL_PROPERTIES = {
     [AstronomicalObjects.SUN]: { emissive: 0xFFFF00 },
@@ -30,12 +47,11 @@
     [AstronomicalObjects.MOON]: { color: 0x888888, emissive: 0x222222 }
   }
 
-  const objects: { [key in AstronomicalObjects]: AstronomicalObjectViewModel } = {} as { [key in AstronomicalObjects]: AstronomicalObjectViewModel };
+  const objects: Record<AstronomicalObjects, AstronomicalObjectViewModel> = {} as Record<AstronomicalObjects, AstronomicalObjectViewModel>;
 
   for (const key of Object.keys(AstronomicalObjects) as Array<keyof typeof AstronomicalObjects>) {
     objects[key] = new AstronomicalObjectViewModel(
       DISPLAY_NAMES[key],
-      EQUITORIAL_RADI_KILOMETERS[key],
       ROTATION_MINUTES[key],
       MATERIAL_PROPERTIES[key]);
   }
@@ -49,20 +65,16 @@
     scene.add(sun.mesh);
     scene.add(sun.group);
 
-    const distanceBetweenPlanets = 10;
-    let distanceFromSun = objects[AstronomicalObjects.SUN].getEquitorialRadiKilometers();
     for (const key of Object.keys(SUN_ORBIT_DURATION_MINUTES) as Array<keyof typeof SUN_ORBIT_DURATION_MINUTES>) {
-      const planet = objects[key];
-      sun.addToOrbit(planet, SUN_ORBIT_DURATION_MINUTES[key]);
-      distanceFromSun = distanceFromSun + distanceBetweenPlanets + planet.getEquitorialRadiKilometers();
-      planet.setX(distanceFromSun);
-      distanceFromSun = distanceFromSun + planet.getEquitorialRadiKilometers()
+      sun.addToOrbit(objects[key], SUN_ORBIT_DURATION_MINUTES[key]);
     }
 
     const moon = objects[AstronomicalObjects.MOON];
     const earth = objects[AstronomicalObjects.EARTH];
-    objects[AstronomicalObjects.EARTH].addToOrbit(moon, 39343);
-    moon.setX(earth.getEquitorialRadiKilometers() + 2 + moon.getEquitorialRadiKilometers());
+    earth.addToOrbit(moon, 39343);
+    moon.setX(radiMap.value[AstronomicalObjects.EARTH] + 2 + radiMap.value[AstronomicalObjects.MOON]);
+
+    updateOrbitRadi();
 
     const intensity = 10000;
     const distance = 5000;
@@ -71,13 +83,28 @@
     return scene;
   }
 
+  function updateOrbitRadi() {
+    let distanceFromSun = radiMap.value[AstronomicalObjects.SUN];
+
+    for (const key of Object.keys(SUN_ORBIT_DURATION_MINUTES) as Array<keyof typeof SUN_ORBIT_DURATION_MINUTES>) {
+      const planet = objects[key];
+      distanceFromSun = distanceFromSun + distanceBetweenPlanets.value + radiMap.value[key];
+      planet.setX(distanceFromSun);
+      distanceFromSun = distanceFromSun + radiMap.value[key];
+    }
+    for (const key of Object.keys(AstronomicalObjects) as Array<keyof typeof AstronomicalObjects>) {
+      const planet = objects[key];
+      planet.scale(radiMap.value[key]);
+    }
+  }
+
   function initCamera(): PerspectiveCamera {
     const fieldOfViewDegrees = 75;
     const aspectRatio = getAspectRatio();
     const nearClippingPane = 0.1;
-    const farClippingPane = 1000;
+    const farClippingPane = 1000000;
     const camera = new PerspectiveCamera(fieldOfViewDegrees, aspectRatio, nearClippingPane, farClippingPane);
-    camera.position.set(0, 300, 0);
+    camera.position.set(0, initialCameraDistance.value, 0);
     camera.up.set(0, 0, 1);
     return camera;
   }
@@ -97,7 +124,7 @@
       canvasContainerRef.value.orbitControlsRef.target.y = 0;
       canvasContainerRef.value.orbitControlsRef.target.z = 0;
       camera.position.x = 0;
-      camera.position.y = 300;
+      camera.position.y = initialCameraDistance.value;
       camera.position.z = 0;
     }
   }
@@ -124,6 +151,7 @@
     <UserControlsContainer
       v-model:current-speed="speed"
       v-model:equidistant-orbits="equidistantOrbits"
+      v-model:equal-planet-size="equalPlanetSize"
       :look-at-control-data="[
         objects[AstronomicalObjects.SUN],
         objects[AstronomicalObjects.MERCURY],

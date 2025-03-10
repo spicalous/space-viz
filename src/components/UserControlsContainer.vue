@@ -11,6 +11,7 @@
 
   const currentSpeed: Ref<Speed> = defineModel('currentSpeed', { required: true });
   const equidistantOrbits: Ref<boolean> = defineModel('equidistantOrbits', { required: true });
+  const equalPlanetSize: Ref<boolean> = defineModel('equalPlanetSize', { required: true });
   const emit = defineEmits(['on:look-at', 'on:recenter']);
   const props = defineProps<{
     lookAtControlData: AstronomicalObjectViewModel[]
@@ -51,24 +52,36 @@
             Recenter
           </button>
         </div>
-        <fieldset class="menu-row button-list">
-          <legend>Look at</legend>
-          <button
-            class="btn-siblings"
-            v-for="astronomicalObjectViewModel in props.lookAtControlData"
-            :key="astronomicalObjectViewModel.displayName"
-            @click="emit('on:look-at', astronomicalObjectViewModel)"
-          >
-            {{ astronomicalObjectViewModel.displayName }}
-          </button>
-        </fieldset>
-        <div class="menu-row hidden">
-          Orbit:
-          <TextToggle
-            v-model="equidistantOrbits"
-            left-false-text="Realistic"
-            right-true-text="Equidistant"
-          />
+        <div class="menu-row">
+          <fieldset class="button-list">
+            <legend>Look at</legend>
+            <button
+              class="btn-siblings"
+              v-for="astronomicalObjectViewModel in props.lookAtControlData"
+              :key="astronomicalObjectViewModel.displayName"
+              @click="emit('on:look-at', astronomicalObjectViewModel)"
+            >
+              {{ astronomicalObjectViewModel.displayName }}
+            </button>
+          </fieldset>
+        </div>
+        <div class="menu-row">
+          <fieldset>
+            <legend>Planet size</legend>
+            <TextToggle
+              v-model="equalPlanetSize"
+              left-false-text="Realistic"
+              right-true-text="Model"
+            />
+          </fieldset>
+          <fieldset class="hidden">
+            <legend>Orbits</legend>
+            <TextToggle
+              v-model="equidistantOrbits"
+              left-false-text="Realistic"
+              right-true-text="Equidistant"
+            />
+          </fieldset>
         </div>
       </div>
     </div>
@@ -110,8 +123,11 @@
     margin-bottom: 0.5rem;
   }
 
-  .button-list {
+  fieldset {
     display: inline-flex;
+  }
+
+  .button-list {
     flex-wrap: wrap;
     gap: 0.25rem;
   }

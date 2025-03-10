@@ -12,7 +12,7 @@ export enum AstronomicalObjects {
   MOON = "MOON"
 }
 
-export const DISPLAY_NAMES = {
+export const DISPLAY_NAMES: Record<AstronomicalObjects, string> = {
   [AstronomicalObjects.SUN]: "Sun",
   [AstronomicalObjects.MERCURY]: "Mercury",
   [AstronomicalObjects.VENUS]: "Venus",
@@ -26,7 +26,7 @@ export const DISPLAY_NAMES = {
   [AstronomicalObjects.MOON]: "Moon",
 };
 
-export const EQUITORIAL_RADI_KILOMETERS = {
+export const EQUITORIAL_RADI_KILOMETERS_EQUAL: Record<AstronomicalObjects, number> = {
   [AstronomicalObjects.SUN]: 10,
   [AstronomicalObjects.MERCURY]: 5,
   [AstronomicalObjects.VENUS]: 5,
@@ -40,7 +40,21 @@ export const EQUITORIAL_RADI_KILOMETERS = {
   [AstronomicalObjects.MOON]: 2
 };
 
-export const ROTATION_MINUTES = {
+export const EQUITORIAL_RADI_KILOMETERS_REALISTIC: Record<AstronomicalObjects, number> = {
+  [AstronomicalObjects.SUN]: 695,
+  [AstronomicalObjects.MERCURY]: 2.4397,
+  [AstronomicalObjects.VENUS]: 6.0518,
+  [AstronomicalObjects.EARTH]: 6.3781,
+  [AstronomicalObjects.MARS]: 3.3962,
+  [AstronomicalObjects.JUPITER]: 71.492,
+  [AstronomicalObjects.SATURN]: 60.268,
+  [AstronomicalObjects.URANUS]: 25.559,
+  [AstronomicalObjects.NEPTUNE]: 24.764,
+  [AstronomicalObjects.PLUTO]: 1.1883,
+  [AstronomicalObjects.MOON]: 1.7374
+};
+
+export const ROTATION_MINUTES: Record<AstronomicalObjects, number> = {
   [AstronomicalObjects.SUN]: 36072,
   [AstronomicalObjects.MERCURY]: 84450,
   [AstronomicalObjects.VENUS]: 349946,

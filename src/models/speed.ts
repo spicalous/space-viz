@@ -12,7 +12,7 @@ export enum Speed {
   ONE_YEAR_PER_SECOND = "ONE_YEAR_PER_SECOND",
 }
 
-export const SPEED_TO_MS_PER_MS = {
+export const SPEED_TO_MS_PER_MS: Record<Speed, number> = {
   [Speed.REAL_TIME]: 1000,
   [Speed.ONE_MINUTE_PER_SECOND]: 1000 * 60,
   [Speed.ONE_HOUR_PER_SECOND]: 1000 * 60 * 60,
@@ -25,7 +25,7 @@ export const SPEED_TO_MS_PER_MS = {
   [Speed.ONE_YEAR_PER_SECOND]: 1000 * 60 * 60 * 24 * 365
 };
 
-export const SPEED_DISPLAY_NAME: { [key in Speed]: string } = {
+export const SPEED_DISPLAY_NAME: Record<Speed, string> = {
   [Speed.REAL_TIME]: 'Real time',
   [Speed.ONE_MINUTE_PER_SECOND]: '1 minute / sec',
   [Speed.ONE_HOUR_PER_SECOND]: '1 hour / sec',

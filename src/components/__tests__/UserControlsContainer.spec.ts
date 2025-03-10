@@ -8,6 +8,7 @@ describe('UserControlsContainer', () => {
   it('sets speed via props', () => {
     const wrapper = mount(UserControlsContainer, { props: {
       currentSpeed: Speed.ONE_MINUTE_PER_SECOND,
+      equalPlanetSize: true,
       equidistantOrbits: true,
       lookAtControlData: []
     }});
@@ -18,6 +19,7 @@ describe('UserControlsContainer', () => {
     const wrapper = mount(UserControlsContainer, { props: {
       currentSpeed: Speed.ONE_MINUTE_PER_SECOND,
       'onUpdate:currentSpeed': (e) => wrapper.setProps({ currentSpeed: e }),
+      equalPlanetSize: true,
       equidistantOrbits: true,
       lookAtControlData: []
     }});
@@ -34,6 +36,7 @@ describe('UserControlsContainer', () => {
     const wrapper = mount(UserControlsContainer, { props: {
       currentSpeed: Speed.SIXTEEN_WEEKS_PER_SECOND,
       'onUpdate:currentSpeed': (e) => wrapper.setProps({ currentSpeed: e }),
+      equalPlanetSize: true,
       equidistantOrbits: true,
       lookAtControlData: []
     }});

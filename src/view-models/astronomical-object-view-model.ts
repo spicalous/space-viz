@@ -7,28 +7,30 @@ const SPHERE_HEIGHT_SEGMENTS = 10;
 export default class AstronomicalObjectViewModel {
 
   displayName: string;
-  equitorialRadiKilometers: number;
   rotationDurationMinutes: number;
+  previousScale: number;
   mesh: Mesh;
   group: Group;
   orbits: [Object3D, number][];
 
   constructor(displayName: string,
-              equitorialRadiKilometers: number,
               rotationDurationMinutes: number,
               materialProperties: object) {
     this.displayName = displayName;
-    this.equitorialRadiKilometers = equitorialRadiKilometers;
     this.rotationDurationMinutes = rotationDurationMinutes;
+    this.previousScale = 1;
     this.mesh = new Mesh(
-      new SphereGeometry(equitorialRadiKilometers, SPHERE_WIDTH_SEGMENTS, SPHERE_HEIGHT_SEGMENTS),
+      new SphereGeometry(this.previousScale, SPHERE_WIDTH_SEGMENTS, SPHERE_HEIGHT_SEGMENTS),
       new MeshPhongMaterial(materialProperties))
     this.group = new Group();
     this.orbits = [];
   }
 
-  getEquitorialRadiKilometers() {
-    return this.equitorialRadiKilometers;
+  scale(newScale: number) {
+    const backToOne = 1 / this.previousScale;
+    this.mesh.geometry.scale(backToOne, backToOne, backToOne);
+    this.mesh.geometry.scale(newScale, newScale, newScale);
+    this.previousScale = newScale;
   }
 
   addToOrbit(aovm: AstronomicalObjectViewModel, orbitDurationMinutes: number) {

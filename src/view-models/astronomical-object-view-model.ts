@@ -1,8 +1,8 @@
 import { Group, Mesh, MeshPhongMaterial, Object3D, SphereGeometry } from 'three';
 
 const FULL_ROTATION = 2 * Math.PI;
-const SPHERE_WIDTH_SEGMENTS = 10;
-const SPHERE_HEIGHT_SEGMENTS = 10;
+const SPHERE_WIDTH_SEGMENTS = 30;
+const SPHERE_HEIGHT_SEGMENTS = 30;
 
 export default class AstronomicalObjectViewModel {
 

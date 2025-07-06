@@ -29,6 +29,7 @@
   <div id="user-controls-container">
     <div class="speed-controls interactive">
       <button
+        class="neon-btn"
         @click="currentSpeed = SPEED_ARRAY[currentSpeedIndex - 1]"
         :disabled="minusDisabled"
       >
@@ -36,6 +37,7 @@
       </button>
       <span>{{ SPEED_DISPLAY_NAME[currentSpeed] }}</span>
       <button
+        class="neon-btn"
         @click="currentSpeed = SPEED_ARRAY[currentSpeedIndex + 1]"
         :disabled="plusDisabled"
       >
@@ -47,6 +49,7 @@
       <div class="menu-content">
         <div class="menu-row">
           <button
+            class="neon-btn"
             @click="emit('on:recenter')"
           >
             Recenter
@@ -56,7 +59,7 @@
           <fieldset class="button-list">
             <legend>Look at</legend>
             <button
-              class="btn-siblings"
+              class="neon-btn btn-siblings"
               v-for="astronomicalObjectViewModel in props.lookAtControlData"
               :key="astronomicalObjectViewModel.displayName"
               @click="emit('on:look-at', astronomicalObjectViewModel)"
@@ -87,6 +90,7 @@
     </div>
     <div class="off-screen-toggle">
       <button
+        class="neon-btn"
         @click="showMenu = !showMenu"
       >
         <component :is="showMenu ? IconClose : IconList"></component>
@@ -106,7 +110,7 @@
     width: 100%;
     bottom: 0;
     padding-bottom: 5rem;
-    background-color: rgba(50, 50, 50, 0.98);
+    background-color: rgba(0, 0, 0, 0.95);
 
     .menu-content {
       padding: 1rem;
@@ -125,6 +129,7 @@
 
   fieldset {
     display: inline-flex;
+    border-color: var(--neon-purple);
   }
 
   .button-list {

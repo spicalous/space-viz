@@ -2,6 +2,10 @@
 :root {
   --white: #EEEEEE;
   --black: #000000;
+  --neon-purple: #64008c;
+  --neon-purple-r: 100;
+  --neon-purple-g: 0;
+  --neon-purple-b: 140;
 }
 
 /* semantic color variables for this project */
@@ -9,16 +13,12 @@
   --text-colour: var(--white);
   --body-bg-colour: #181818;
 
-  --button-text-colour: var(--white);
-  --button-border-colour: var(--white);
-  --button-active-bg-colour: var(--white);
-  --button-active-text-colour: var(--black);
-  --button-hover-bg-colour: var(--white);
-  --button-hover-text-colour: var(--black);
+  --btn-bg-colour: var(--black);
+  --btn-text-colour: var(--white);
 
-  --text-toggle-border-colour: var(--white);
-  --text-toggle-active-bg-colour: var(--white);
-  --text-toggle-active-text-colour: var(--black);
+  --toggle-btn-bg-colour: var(--body-bg-colour);
+  --toggle-btn-text-colour: var(--white);
+  --toggle-btn-active-bg-colour: var(--neon-purple);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,16 +26,12 @@
     --text-colour: var(--white);
     --body-bg-colour: #181818;
 
-  --button-text-colour: var(--white);
-  --button-border-colour: var(--white);
-  --button-active-bg-colour: var(--white);
-  --button-active-text-colour: var(--black);
-  --button-hover-bg-colour: var(--white);
-  --button-hover-text-colour: var(--black);
+    --btn-bg-colour: var(--black);
+    --btn-text-colour: var(--white);
 
-  --text-toggle-border-colour: var(--white);
-  --text-toggle-active-bg-colour: var(--white);
-  --text-toggle-active-text-colour: var(--black);
+    --toggle-btn-bg-colour: var(--black);
+    --toggle-btn-text-colour: var(--white);
+    --toggle-btn-active-bg-colour: var(--neon-purple);
   }
 }
 

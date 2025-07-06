@@ -30,19 +30,20 @@
 <style scoped>
   .text-toggle {
     display: inline-block;
-    border: solid 2px;
-    border-radius: 0.1rem;
-    border-color: var(--text-toggle-border-colour);
-    padding: 0.2rem;
+    background: var(--toggle-btn-bg-colour);
+    border-radius: 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(var(--neon-purple-r), var(--neon-purple-g), var(--neon-purple-b), 0.5);
+    transition: all 0.3s ease;
+    color: var(--btn-text-colour);
 
     .toggle-button {
       cursor: pointer;
       display: inline-block;
-      padding: 0.2rem;
+      padding: 0.5rem;
 
       &.active {
-        color: var(--text-toggle-active-text-colour);
-        background-color: var(--text-toggle-active-bg-colour);
+        background-color: var(--toggle-btn-active-bg-colour);
       }
       &:first-child {
         padding-right: 0.3rem;

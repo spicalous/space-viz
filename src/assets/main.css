@@ -32,29 +32,30 @@ button {
   pointer-events: auto;
   cursor: pointer;
   display: inline-block;
-  padding: 0.5rem;
-  border-radius: 0.1rem;
-  background-color: transparent;
-  color: var(--button-text-colour);
-  border-color: var(--button-border-colour);
 
   &:disabled {
     cursor: not-allowed;
-    border-color: #333333;
-    color: #333333;
   }
-  &:active {
-    background-color: var(--button-active-bg-colour);
-    color: var(--button-active-text-colour);
-  }
+}
+
+.neon-btn {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: none;
+  background: var(--btn-bg-colour);
+  color: var(--btn-text-colour);
+  box-shadow: 0 0 10px rgba(var(--neon-purple-r), var(--neon-purple-g), var(--neon-purple-b), 0.5);
+  transition: all 0.3s ease;
 }
 
 /* only style hover if device supports it i.e. mouse pointer and not touch devices */
 @media (hover: hover) {
-    button:hover:enabled {
-      background-color: var(--button-hover-bg-colour);
-      color: var(--button-hover-text-colour);
-    }
+  .neon-btn:hover:enabled {
+    box-shadow:
+      0 0 20px rgba(var(--neon-purple-r), var(--neon-purple-g), var(--neon-purple-b), 1),
+      0 0 30px rgba(var(--neon-purple-r), var(--neon-purple-g), var(--neon-purple-b), 0.8);
+    background: var(--neon-purple);
+  }
 }
 
 .bi {
